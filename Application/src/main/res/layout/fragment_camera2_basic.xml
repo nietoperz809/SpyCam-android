@@ -17,38 +17,75 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.android.camera2basic.AutoFitTextureView
+    <com.example.android.SpyCam.AutoFitTextureView
         android:id="@+id/texture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
 
-    <FrameLayout
+
+    <GridLayout
         android:id="@+id/control"
-        android:layout_width="match_parent"
-        android:layout_height="112dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/control_background">
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@+id/onoff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/on_off"
+            android:layout_row="0"
+            android:layout_column="0"/>
+
+        <Button
+            android:id="@+id/kill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kill"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:elevation="0dp"/>
+
+        <CheckBox
+            android:text="@string/beep"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/toneCheck"/>
+
+        <Spinner
+            android:choiceMode="singleChoice"
+            android:listSelector="@android:color/darker_gray"
+            android:id="@+id/freqlist"
+            android:entries="@array/sports_array"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/picture" />
+            android:text="@string/picture"
+            android:layout_row="0"
+            android:layout_column="1"/>
 
-        <ImageButton
-            android:id="@+id/info"
-            android:contentDescription="@string/description_info"
-            style="@android:style/Widget.Material.Light.Button.Borderless"
+        <TextView
+            android:id="@+id/tv"
+            android:layout_row="3"
+            android:layout_column="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:padding="20dp"
-            android:src="@drawable/ic_action_info" />
+            android:text="@string/spy_cam"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"/>
 
-    </FrameLayout>
+    </GridLayout>
+
 
 </RelativeLayout>

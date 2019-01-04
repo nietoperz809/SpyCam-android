@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 The Android Open Source Project
+ * Copyright 2014 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,38 @@
  * limitations under the License.
  */
 
-package com.example.android.camera2basic;
+package com.example.android.SpyCam;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
+import android.view.WindowManager;
 
-public class CameraActivity extends AppCompatActivity {
+import com.example.android.camera2basic.R;
+
+public class CameraActivity extends Activity
+{
+    static void setFullScreen(Activity act)
+    {
+        act.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        act.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        act.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+        setFullScreen(this);
+
         setContentView(R.layout.activity_camera);
-        if (null == savedInstanceState) {
-            getSupportFragmentManager().beginTransaction()
+        if (null == savedInstanceState)
+        {
+            getFragmentManager().beginTransaction()
                     .replace(R.id.container, Camera2BasicFragment.newInstance())
                     .commit();
         }
     }
-
 }

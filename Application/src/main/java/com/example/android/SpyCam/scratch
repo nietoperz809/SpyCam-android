@@ -1,0 +1,139 @@
+package com.example.android.SpyCam;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.media.Image;
+import android.util.DisplayMetrics;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+/**
+ * Saves a JPEG {@link Image} into the specified {@link File}.
+ */
+class ImageSaver implements Runnable
+{
+
+    /**
+     * The JPEG image
+     */
+    private final Image mImage;
+    /**
+     * The file we save the image into.
+     */
+    private final File mFile;
+
+    public ImageSaver(Image image, File file)
+    {
+        mImage = image;
+        mFile = file;
+    }
+
+    public static Bitmap waterMark(Bitmap src, String watermark, Point location, int color, int alpha,
+                              int size, boolean underline)
+    {
+        int w = src.getWidth();
+        int h = src.getHeight();
+        Bitmap result = Bitmap.createBitmap(w, h, src.getConfig());
+
+        Canvas canvas = new Canvas(result);
+        canvas.drawBitmap(src, 0, 0, null);
+
+        Paint paint = new Paint();
+        paint.setColor(color);
+        paint.setAlpha(alpha);
+        paint.setTextSize(size);
+        paint.setAntiAlias(true);
+        paint.setUnderlineText(underline);
+        canvas.drawText(watermark, location.x, location.y, paint);
+
+        return result;
+    }
+
+    public static Bitmap getScreenshot (Image image)
+    {
+        DisplayMetrics metrics = TheApp.getAppContext().getResources().getDisplayMetrics();
+        Image.Plane[] planes = image.getPlanes();
+        ByteBuffer buffer = planes[0].getBuffer();
+        Bitmap bitmap = Bitmap.createBitmap(metrics.widthPixels,
+                metrics.heightPixels, Bitmap.Config.RGB_565);
+        bitmap.copyPixelsFromBuffer(buffer);
+        image.close();
+
+        return bitmap;
+    }
+
+    @Override
+    public void run()
+    {
+        Bitmap b1 = getScreenshot(mImage);
+//        DisplayMetrics metrics = TheApp.getAppContext().getResources().getDisplayMetrics();
+//        Image.Plane[] planes = mImage.getPlanes();
+//        ByteBuffer buffer = planes[0].getBuffer();
+//        int pixelStride = planes[0].getPixelStride();
+//        int rowStride = planes[0].getRowStride();
+//        int rowPadding = rowStride - pixelStride * metrics.widthPixels;
+//
+//        Bitmap b1 = Bitmap.createBitmap(metrics.widthPixels + rowPadding /*/ pixelStride*/,
+//                metrics.heightPixels, Bitmap.Config.ARGB_8888);
+//        b1.copyPixelsFromBuffer(buffer);
+//        Bitmap b2 = waterMark (b1, "HALLO", new Point(10,10), Color.YELLOW, 255, 100, true);
+//        int bc = b2.getByteCount();
+//        ByteBuffer buff = ByteBuffer.allocate(bc);
+//        b2.copyPixelsToBuffer(buff);
+//        byte[] bytes = new byte[buff.remaining()];
+//        buff.get(bytes);
+
+        //        ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
+//        byte[] bytes = new byte[buffer.remaining()];
+//        buffer.get(bytes);
+//
+//        DisplayMetrics metrics = TheApp.getAppContext().getResources().getDisplayMetrics();
+//
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inScreenDensity = metrics.densityDpi;
+//
+//        Bitmap b1 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+//    Bitmap b2 = waterMark (b1, "HALLO", new Point(10,10), Color.YELLOW, 255, 100, true);
+//        int bc = b2.getByteCount();
+
+
+        //        ByteBuffer buff = ByteBuffer.allocate(bc);
+//        b2.copyPixelsToBuffer(buff);
+//        bytes = new byte[buff.remaining()];
+//        buff.get(bytes);
+
+        FileOutputStream output = null;
+        try
+        {
+            output = new FileOutputStream(mFile);
+//            output.write(bytes);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            mImage.close();
+            if (null != output)
+            {
+                try
+                {
+                    output.close();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+}
